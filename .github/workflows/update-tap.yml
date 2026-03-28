@@ -1,0 +1,46 @@
+name: Update Tap
+
+on:
+  repository_dispatch:
+    types: [update-tap]
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Update formula and cask
+        run: |
+          VERSION="${{ github.event.client_payload.version }}"
+          SHA_CLI_ARM="${{ github.event.client_payload.sha256_cli_arm64 }}"
+          SHA_CLI_X86="${{ github.event.client_payload.sha256_cli_x86_64 }}"
+          SHA_DMG_ARM="${{ github.event.client_payload.sha256_dmg_arm64 }}"
+          SHA_DMG_X86="${{ github.event.client_payload.sha256_dmg_x86_64 }}"
+
+          # Update Formula version and sha256 values
+          sed -i "s/version \".*\"/version \"${VERSION}\"/" Formula/homerun.rb
+          sed -i "0,/sha256 \".*\"/{s/sha256 \".*\"/sha256 \"${SHA_CLI_ARM}\"/}" Formula/homerun.rb
+          sed -i "0,/sha256 \".*\"/! {0,/sha256 \".*\"/ s/sha256 \".*\"/sha256 \"${SHA_CLI_X86}\"/}" Formula/homerun.rb
+
+          # Update Cask version and sha256 values
+          sed -i "s/version \".*\"/version \"${VERSION}\"/" Casks/homerun.rb
+          sed -i "0,/sha256 \".*\"/{s/sha256 \".*\"/sha256 \"${SHA_DMG_ARM}\"/}" Casks/homerun.rb
+          sed -i "0,/sha256 \".*\"/! {0,/sha256 \".*\"/ s/sha256 \".*\"/sha256 \"${SHA_DMG_X86}\"/}" Casks/homerun.rb
+
+          echo "Updated to version ${VERSION}"
+          echo "Formula SHA256: arm64=${SHA_CLI_ARM} x86_64=${SHA_CLI_X86}"
+          echo "Cask SHA256: arm64=${SHA_DMG_ARM} x86_64=${SHA_DMG_X86}"
+
+      - name: Commit and push
+        run: |
+          VERSION="${{ github.event.client_payload.version }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git diff --cached --quiet && echo "No changes" && exit 0
+          git commit -m "chore: update to v${VERSION}"
+          git push
