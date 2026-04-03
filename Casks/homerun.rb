@@ -1,14 +1,14 @@
 cask "homerun" do
-  version "0.8.1"
+  version "0.8.2"
 
   on_arm do
     url "https://github.com/aGallea/homerun/releases/download/v#{version}/HomeRun_#{version}_aarch64.dmg"
-    sha256 "d0f6691d5990e57d6c2ab82d88f6c2d1399372bbf01260e1a7b2a716715c61fa"
+    sha256 "39edfac79eb1c53a2b74301e456514004b2b516208a065b910174c0f0def644a"
   end
 
   on_intel do
     url "https://github.com/aGallea/homerun/releases/download/v#{version}/HomeRun_#{version}_x64.dmg"
-    sha256 "1474218d6650b9bf520045101163d47da0e4cefc01ae626e05cbf63555827b0f"
+    sha256 "b4efde26098053a276b1fd63f930eb18264ca6efef80d727117381d44bd945d5"
   end
 
   name "HomeRun"
