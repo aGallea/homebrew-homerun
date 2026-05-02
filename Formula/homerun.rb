@@ -1,17 +1,17 @@
 class Homerun < Formula
   desc "Manage GitHub Actions self-hosted runners on macOS"
   homepage "https://github.com/aGallea/homerun"
-  version "0.8.2"
+  version "0.8.4"
   license "MIT"
 
   on_arm do
     url "https://github.com/aGallea/homerun/releases/download/v#{version}/homerun-v#{version}-aarch64-apple-darwin.tar.gz"
-    sha256 "2e1320eb46839d9a3caddb6ff18e67d04ea6ac6ce11beba120c935ced921cefe"
+    sha256 "74d30070790723019808238711f8a48671f29b9e4888cb293dc6d3bc89452038"
   end
 
   on_intel do
     url "https://github.com/aGallea/homerun/releases/download/v#{version}/homerun-v#{version}-x86_64-apple-darwin.tar.gz"
-    sha256 "482818a9b8cce7ac3f54f5384ec52cfd565c5496b90dedf274ed924fe2935069"
+    sha256 "fef9f4ea30afca62421f123c9efd3d4c90750cfa87a2647cabb40f7211443d5e"
   end
 
   def install
